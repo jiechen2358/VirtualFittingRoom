@@ -6,4 +6,4 @@ To setup:
 * In maskrcnn folder download mask_rcnn_coco.h5 from: https://github.com/matterport/Mask_RCNN/releases/tag/v2.0
 
 # A simple Demo to train ModaNet data on Mask-RCNN
-See notebook: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/train_fashion.ipynb
+See notebook in: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/
