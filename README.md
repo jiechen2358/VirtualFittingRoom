@@ -1,4 +1,5 @@
 # VirtualFittingRoom
+Note: This project is still in progress ...
 
 To setup:
 * download ModaNet annotations from https://github.com/eBay/modanet. Put modanet2018_instances_train.json and modanet2018_instances_val.json files under root(VirtualFittingRoom) directory
