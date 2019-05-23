@@ -32,7 +32,7 @@ Install LMDB and pandas:
 
       pip install lmdb pandas
 
-## pycocotools
+### pycocotools
 Install `pycocotools` from one of these repos. They are forks of the original pycocotools with fixes for Python3 and Windows (the official repo doesn't seem to be active anymore).
 
     * Linux: https://github.com/waleedka/coco
