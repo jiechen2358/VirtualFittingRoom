@@ -16,12 +16,12 @@ Given a portrait picture, the goal of our project is to replace the texture and 
 
 * In maskrcnn folder download mask_rcnn_coco.h5 from: https://github.com/matterport/Mask_RCNN/releases/tag/v2.0. Put .h5 file in mask_rcnn directory.
 
-## A simple Demo to train (Fashion) ModaNet data using Mask-RCNN
+## A Demo to train (Fashion) ModaNet data using Mask-RCNN
 See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/, which including:
 * A sample script to perform training and testing.
 * A sample Jupyter notebook.
-* A backup pdf for reading purpose.
-* Instructions how to perform training and testing.
+* A backup pdf format for reading purpose.
+* Instructions on how to perform training and testing.
 
 ## Prerequisites
 Python 3, TensorFlow >= 1.3, Keras >= 2.0.8 and other packages listed in requirements.txt:
