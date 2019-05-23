@@ -1,3 +1,5 @@
-# train_fashion.ipynb
+# Fashion Items Segmentation
+## train_fashion.ipynb
 It is a demo jupyter notebook that shows how to load, train and test the virtual fitting room program.
 Most importantly, it shows how to train Mask R-CNN on Modanet dataset. Try to run with a GPU, and you would be able to get OKish result in a few minutes. It uses pre-trained weights to initialize.
+##
