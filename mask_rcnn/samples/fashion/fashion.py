@@ -14,78 +14,70 @@ import sqlite3
 import pandas as pd
 import json
 import argparse
-
-# Root directory of the project
-ROOT_DIR = os.path.abspath("../../")
-# Import Mask RCNN
-sys.path.append(ROOT_DIR)  # To find local version of the library
-from mrcnn.config import Config
-from mrcnn import utils
-import mrcnn.model as modellib
-from mrcnn import visualize
-from mrcnn.model import log
 from PIL import Image
 from IPython.display import display
 from pycocotools.coco import COCO
 from pycocotools import mask as maskUtils
 
+# Root directory of the project
+ROOT_DIR = os.path.abspath("../../")
+# Import Mask RCNN
+sys.path.append(ROOT_DIR)
+from mrcnn.config import Config
+from mrcnn import utils
+import mrcnn.model as modellib
+from mrcnn import visualize
+from mrcnn.model import log
 
 parser = argparse.ArgumentParser(description='option for Fashion Segmentation')
 parser.add_argument('-t', '--test', action='store_true', help='perform test')
 args = parser.parse_args()
 
 
-class FashionConfig(Config):
-    """Configuration for training on the toy shapes dataset.
+class TrainConfig(Config):
+    """
+    Configuration for training on the toy shapes dataset.
     Derives from the base Config class and overrides values specific
     to the toy shapes dataset.
     """
-    # Give the configuration a recognizable name
     NAME = "fashion"
-
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 1
-    IMAGES_PER_GPU = 1
-
+    IMAGES_PER_GPU = 8
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 13  # background + 3 shapes
-
+    NUM_CLASSES = 1 + 13  # background + 13 shapes
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
-    IMAGE_MIN_DIM = 128
-    IMAGE_MAX_DIM = 128
-
+    IMAGE_MIN_DIM = 256
+    IMAGE_MAX_DIM = 256
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (8, 16, 32, 64, 128)  # anchor side in pixels
-
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
     TRAIN_ROIS_PER_IMAGE = 32
-
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 100
-
+    STEPS_PER_EPOCH = 10
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 5
-    
 
-class InferenceConfig(FashionConfig):
+
+class TestConfig(TrainConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
 
 class PhotoData(object):
     def __init__(self, path):
         self.env = lmdb.open(
-            path, map_size=2**36, readonly=True, lock=False
+            path, map_size=2 ** 36, readonly=True, lock=False
         )
-        
+
     def __iter__(self):
         with self.env.begin() as t:
             with t.cursor() as c:
                 for key, value in c:
                     yield key, value
-        
+
     def __getitem__(self, index):
         key = str(index).encode('ascii')
         with self.env.begin() as t:
@@ -96,48 +88,61 @@ class PhotoData(object):
             image = Image.open(f)
             image.load()
             return image
-        
+
     def __len__(self):
         return self.env.stat()['entries']
 
 
 class FashionDataset(utils.Dataset):
 
-    def load_fashion(self, count=5, start=0):
+    def load_fashion(self, count=5, start=0, class_ids=None):
         json_file = r'..' + os.path.sep + '..' + os.path.sep + '..' + os.path.sep + 'modanet2018_instances_train.json'
         d = json.load(open(json_file))
-        coco=COCO(json_file)
-        class_ids = sorted(coco.getCatIds())
-        for id in class_ids:
-            self.add_class("fashion", id, "")
-        
+        coco = COCO(json_file)
+
+        if not class_ids:
+            class_ids = sorted(coco.getCatIds())
+
+        if class_ids:
+            all_ids = []
+            for id in class_ids:
+                all_ids.extend(list(coco.getImgIds(catIds=[id])))
+            # Remove duplicates
+            all_ids = list(set(all_ids))
+        else:
+            # All images
+            all_ids = list(coco.imgs.keys())
+
+        # Add classes
+        for i in class_ids:
+            print('{}:{}'.format(i, coco.loadCats(i)[0]['name']))
+            self.add_class("fashion", i, coco.loadCats(i)[0]['name'])
+
         image_ids = []
         for c in range(count):
             if c < 5:
-                print(d['images'][c+start]['id'])
-            image_ids.append(d['images'][c+start]['id'])
-            
+                print(all_ids[c + start])
+            image_ids.append(all_ids[c + start])
+
         # Add images
         for i in image_ids:
-            annIds = coco.getAnnIds(imgIds=i, catIds=class_ids, iscrowd=None)
-            anns = coco.loadAnns(annIds)
-            width = coco.imgs[i]["width"]
-            height = coco.imgs[i]["height"]
-            self.add_image("fashion", image_id=i, path=None, 
-                           width=width, height=height, annotations=anns)
-            
+            self.add_image(
+                "fashion", image_id=i,
+                path=None,
+                width=coco.imgs[i]["width"],
+                height=coco.imgs[i]["height"],
+                annotations=coco.loadAnns(coco.getAnnIds(
+                    imgIds=[i], catIds=class_ids, iscrowd=None)))
 
     def load_image(self, image_id):
         imgId = self.image_info[image_id]['id']
         image = photo_data[imgId]
         out = np.array(image.getdata()).astype(np.int32).reshape((image.size[1], image.size[0], 3))
         return out
-            
 
     def image_reference(self, image_id):
         """Return the shapes data of the image."""
         pass
-    
 
     def load_mask(self, image_id):
         """Load instance masks for the given image.
@@ -186,8 +191,7 @@ class FashionDataset(utils.Dataset):
             return mask, class_ids
         else:
             # Call super class to return an empty mask
-            return super(CocoDataset, self).load_mask(image_id)
-        
+            return super(FashionDataset, self).load_mask(image_id)
 
     def annToRLE(self, ann, height, width):
         """
@@ -218,25 +222,23 @@ class FashionDataset(utils.Dataset):
         return m
 
 
-def train():
+def train(init_with='coco'): # imagenet, coco, or last
     '''
         Perform training.
     '''
     # Load and display random samples
-    image_ids = np.random.choice(dataset_train.image_ids, 1)
-    for image_id in image_ids:
-        image = dataset_train.load_image(image_id)
-        mask, class_ids = dataset_train.load_mask(image_id)
-        visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
 
+    # image_ids = np.random.choice(dataset_train.image_ids, 1)
+    # for image_id in image_ids:
+    #     image = dataset_train.load_image(image_id)
+    #     mask, class_ids = dataset_train.load_mask(image_id)
+    #     visualize.display_top_masks(image, mask, class_ids, dataset_train.class_names)
 
     # Create model in training mode
     model = modellib.MaskRCNN(mode="training", config=config,
-                            model_dir=MODEL_DIR)
+                              model_dir=MODEL_DIR)
 
     # Which weights to start with?
-    init_with = "coco"  # imagenet, coco, or last
-
     if init_with == "imagenet":
         model.load_weights(model.get_imagenet_weights(), by_name=True)
     elif init_with == "coco":
@@ -244,60 +246,55 @@ def train():
         # are different due to the different number of classes
         # See README for instructions to download the COCO weights
         model.load_weights(COCO_MODEL_PATH, by_name=True,
-                        exclude=["mrcnn_class_logits", "mrcnn_bbox_fc", 
+                           exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",
                                     "mrcnn_bbox", "mrcnn_mask"])
     elif init_with == "last":
         # Load the last model you trained and continue training
         model.load_weights(model.find_last(), by_name=True)
 
-
     # Train the head branches
     # Passing layers="heads" freezes all layers except the head
     # layers. You can also pass a regular expression to select
     # which layers to train by name pattern.
-    model.train(dataset_train, dataset_val, 
-                learning_rate=config.LEARNING_RATE, 
-                epochs=1, 
+    model.train(dataset_train, dataset_val,
+                learning_rate=config.LEARNING_RATE,
+                epochs=200,
                 layers='heads')
-
 
     # Fine tune all layers
     # Passing layers="all" trains all layers. You can also 
     # pass a regular expression to select which layers to
     # train by name pattern.
-    model.train(dataset_train, dataset_val, 
+    model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE / 10,
-                epochs=1, 
+                epochs=100,
                 layers="all")
-
+    print("Training completed.")
 
 def test():
     '''
         Perform testing.
     '''
     # Recreate the model in inference mode
-    model = modellib.MaskRCNN(mode="inference", 
-                            config=inference_config,
-                            model_dir=MODEL_DIR)
+    model = modellib.MaskRCNN(mode="inference",
+                              config=test_config,
+                              model_dir=MODEL_DIR)
 
     # Get path to saved weights
     # Either set a specific path or find last trained weights
     # model_path = os.path.join(ROOT_DIR, ".h5 file name here")
     model_path = model.find_last()
-
     # Load trained weights
     print("Loading weights from ", model_path)
     model.load_weights(model_path, by_name=True)
 
     APs = []
-    # Test on a random image
-    # image_id = random.choice(dataset_val.image_ids)
-    # image_ids = dataset_val.image_ids
-    image_ids = [0]
+    # Test on 5 random image
+    image_ids = np.random.choice(dataset_val.image_ids, 5)
     for image_id in image_ids:
-        original_image, image_meta, gt_class_id, gt_bbox, gt_mask =\
-            modellib.load_image_gt(dataset_val, inference_config, 
-                                image_id, use_mini_mask=False)
+        original_image, image_meta, gt_class_id, gt_bbox, gt_mask = \
+            modellib.load_image_gt(dataset_val, test_config,
+                                   image_id, use_mini_mask=False)
 
         log("original_image", original_image)
         log("image_meta", image_meta)
@@ -307,11 +304,11 @@ def test():
         results = model.detect([original_image], verbose=1)
         r = results[0]
         # Compute AP
-        AP, precisions, recalls, overlaps =\
+        AP, precisions, recalls, overlaps = \
             utils.compute_ap(gt_bbox, gt_class_id, gt_mask,
-                            r["rois"], r["class_ids"], r["scores"], r['masks'])
+                             r["rois"], r["class_ids"], r["scores"], r['masks'])
         APs.append(AP)
-        
+
     print("mAP: ", np.mean(APs))
 
 
@@ -324,28 +321,26 @@ COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 if not os.path.exists(COCO_MODEL_PATH):
     utils.download_trained_weights(COCO_MODEL_PATH)
 # Load photo data from lmdb
-photo_data = PhotoData(r'..'+os.path.sep+'..'+os.path.sep+'..'+os.path.sep+'photos.lmdb')
+photo_data = PhotoData(r'..' + os.path.sep + '..' + os.path.sep + '..' + os.path.sep + 'photos.lmdb')
 print('Length of photo data:', len(photo_data))
 
-
 if __name__ == "__main__":
-    config = FashionConfig()
+    config = TrainConfig()
     config.display()
 
     # Training dataset
-    train_count = 1
+    train_count = 1000
     dataset_train = FashionDataset()
-    dataset_train.load_fashion(train_count)
+    dataset_train.load_fashion(train_count, start=0, class_ids=None)
     dataset_train.prepare()
 
-    inference_config = InferenceConfig()
+    test_config = TestConfig()
+    val_count = 50
 
-    val_count = 1
-    # Validation dataset - overfit 1 image
     dataset_val = FashionDataset()
     dataset_val.load_fashion(val_count)
     dataset_val.prepare()
-    
+
     if args.test:
         print("Perform testing ...")
         test()
