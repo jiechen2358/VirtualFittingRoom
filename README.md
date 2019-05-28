@@ -8,8 +8,8 @@ Given a portrait picture, the goal of our project is to replace the texture and 
 See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/, which including:
 * Instructions on how to perform training and testing.
 * A sample script to perform training and testing.
-* A sample Jupyter notebook to train model.
-* A sample Jupyter notebook to load pretrained model and perform test.
+* A sample Jupyter notebook to demo how to train model.
+* A sample Jupyter notebook to demo how to load pretrained model and perform test.
 * A backup pdf format for reading purpose.
 
 ## Dataset
