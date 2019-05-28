@@ -4,24 +4,25 @@ Note: This project is still in progress ..
 ## Introduction
 Given a portrait picture, the goal of our project is to replace the texture and style of any piece of attire with new texture or style based on the user's choice. For instance, by feeding one portrait image with selections of target textures either predetermined or from another image, our application will change the textures or styles of certain fashion items respectively: pants texture will be transferred from canvas to jeans; coat texture will be transferred from cotton to leather.Thus we can adopt different combinations in different scenarios depending on the input image: day or night; indoor or outdoor with different body poses.
 
+## A Demo to train and test (Fashion) ModaNet data using Mask-RCNN
+See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/, which including:
+* Instructions on how to perform training and testing.
+* A sample script to perform training and testing.
+* A sample Jupyter notebook to train model.
+* A sample Jupyter notebook to load pretrained model and perform test.
+* A backup pdf format for reading purpose.
+
 ## Dataset
 * The raw image  data comes from PaperDoll dataset - a collection of images of street-fashion models.
 * Annotations are provideded by eBay's ModaNet - a dateset labels the subset of PaperDoll. The labels include bounding boxes, segmentations of 13 categories, including bag, belt, boots, top, shorts, scarf, tie etc. The labels are formmated in COCO style.
 
-## Project and Data Setup:
+### Project and Data Setup:
 * Download ModaNet annotations from https://github.com/eBay/modanet. Put modanet2018_instances_train.json and modanet2018_instances_val.json files under root(VirtualFittingRoom) directory.
 * ModaNet annotation is based on Paperdoll dataset: Please follow the instruction in https://github.com/kyamagu/paperdoll/tree/master/data/chictopia and download raw data (40GB). Then extract the LMDB content and put file in the VirtualFittingRoom root directory:
 
       tar xf photos.lmdb.tar
 
 * In maskrcnn folder download mask_rcnn_coco.h5 from: https://github.com/matterport/Mask_RCNN/releases/tag/v2.0. Put .h5 file in mask_rcnn directory.
-
-## A Demo to train (Fashion) ModaNet data using Mask-RCNN
-See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/, which including:
-* A sample script to perform training and testing.
-* A sample Jupyter notebook.
-* A backup pdf format for reading purpose.
-* Instructions on how to perform training and testing.
 
 ## Prerequisites
 Python 3, TensorFlow >= 1.3, Keras >= 2.0.8 and other packages listed in requirements.txt:
