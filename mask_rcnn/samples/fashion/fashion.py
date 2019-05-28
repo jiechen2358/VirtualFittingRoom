@@ -149,7 +149,12 @@ class FashionDataset(utils.Dataset):
     def load_image(self, image_id):
         imgId = self.image_info[image_id]['id']
         image = photo_data[imgId]
-        out = np.array(image.getdata()).astype(np.int32).reshape((image.size[1], image.size[0], 3))
+        try:
+            out = np.array(image.getdata()).astype(np.int32).reshape((image.size[1], image.size[0], 3))
+        except: 
+            # This handles GrayScaleImage
+            out = np.array(image.getdata()).astype(np.int32).reshape((image.size[1], image.size[0]))
+            out = np.stack((out,)*3, axis=-1)
         return out
 
     def image_reference(self, image_id):
