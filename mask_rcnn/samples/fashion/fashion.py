@@ -33,6 +33,10 @@ parser = argparse.ArgumentParser(description='option for Fashion Segmentation')
 parser.add_argument('-t', '--test', action='store_true', help='perform test')
 args = parser.parse_args()
 
+# Items used
+# 1:bag|2:belt|3:boots|4:footwear|5:outer|6:dress|7:sunglasses|8:pants|9:top|10:shorts|11:skirt|12:headwear|13:scarf/tie
+subset = ['bag', 'belt', 'outer', 'dress', 'pants', 'top', 'shorts', 'skirt', 'scarf/tie']
+
 
 class TrainConfig(Config):
     """
@@ -46,7 +50,7 @@ class TrainConfig(Config):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 8
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 13  # background + 13 shapes
+    NUM_CLASSES = 1 + 13 # background + 13 shapes
     # Use small images for faster training. Set the limits of the small side
     # the large side, and that determines the image shape.
     IMAGE_MIN_DIM = 256
@@ -57,7 +61,7 @@ class TrainConfig(Config):
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
     TRAIN_ROIS_PER_IMAGE = 32
     # Use a small epoch since the data is simple
-    STEPS_PER_EPOCH = 10
+    STEPS_PER_EPOCH = 100
     # use small validation steps since the epoch is small
     VALIDATION_STEPS = 5
 
@@ -65,6 +69,7 @@ class TrainConfig(Config):
 class TestConfig(TrainConfig):
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
+
 
 class PhotoData(object):
     def __init__(self, path):
@@ -96,10 +101,11 @@ class PhotoData(object):
 class FashionDataset(utils.Dataset):
 
     def load_fashion(self, count=5, start=0, class_ids=None):
-        json_file = r'..' + os.path.sep + '..' + os.path.sep + '..' + os.path.sep + 'modanet2018_instances_train.json'
-        d = json.load(open(json_file))
-        coco = COCO(json_file)
-
+        if args.test:
+            print('load data for testing.')
+        else:
+            print('load data for training.')
+        
         if not class_ids:
             class_ids = sorted(coco.getCatIds())
 
@@ -112,17 +118,23 @@ class FashionDataset(utils.Dataset):
         else:
             # All images
             all_ids = list(coco.imgs.keys())
+        random.seed(2)
+        random.shuffle(all_ids)
 
         # Add classes
-        for i in class_ids:
+        all_class_ids = sorted(coco.getCatIds())
+        for i in all_class_ids:
             print('{}:{}'.format(i, coco.loadCats(i)[0]['name']))
             self.add_class("fashion", i, coco.loadCats(i)[0]['name'])
 
         image_ids = []
-        for c in range(count):
-            if c < 5:
-                print(all_ids[c + start])
-            image_ids.append(all_ids[c + start])
+        print('number of images: ' + str(count))
+        # Since we have 50K+ images and we only use several Thousand images
+        # There will be no overlaps. If you plan to use 50k+, please redefine retrival logic.
+        if args.test:
+            image_ids = all_ids[-(count+start):]
+        else:
+            image_ids = all_ids[:count+start]
 
         # Add images
         for i in image_ids:
@@ -252,22 +264,28 @@ def train(init_with='coco'): # imagenet, coco, or last
         # Load the last model you trained and continue training
         model.load_weights(model.find_last(), by_name=True)
 
+    epoch_1 = 100
+    epoch_2 = epoch_1 + 100
+
     # Train the head branches
     # Passing layers="heads" freezes all layers except the head
     # layers. You can also pass a regular expression to select
     # which layers to train by name pattern.
+
+    print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=200,
+                epochs=epoch_1,
                 layers='heads')
 
     # Fine tune all layers
     # Passing layers="all" trains all layers. You can also 
     # pass a regular expression to select which layers to
     # train by name pattern.
+    print("Fine tune all layers")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE / 10,
-                epochs=100,
+                epochs=epoch_2,
                 layers="all")
     print("Training completed.")
 
@@ -289,18 +307,21 @@ def test():
     model.load_weights(model_path, by_name=True)
 
     APs = []
-    # Test on 5 random image
-    image_ids = np.random.choice(dataset_val.image_ids, 5)
+    # Test on a random image
+    image_ids = np.random.choice(dataset_val.image_ids, 10)
+    # image_ids = dataset_val.image_ids
     for image_id in image_ids:
+        print('=== Test on image: ' + str(image_id))
+        print('=> Load Ground truth:')
         original_image, image_meta, gt_class_id, gt_bbox, gt_mask = \
             modellib.load_image_gt(dataset_val, test_config,
                                    image_id, use_mini_mask=False)
-
         log("original_image", original_image)
         log("image_meta", image_meta)
         log("gt_class_id", gt_class_id)
         log("gt_bbox", gt_bbox)
         log("gt_mask", gt_mask)
+        print('=> Result:')
         results = model.detect([original_image], verbose=1)
         r = results[0]
         # Compute AP
@@ -308,8 +329,9 @@ def test():
             utils.compute_ap(gt_bbox, gt_class_id, gt_mask,
                              r["rois"], r["class_ids"], r["scores"], r['masks'])
         APs.append(AP)
-
+        print('AP for image ' + str(image_id) + ': ', AP)
     print("mAP: ", np.mean(APs))
+    print("Test Complete.")
 
 
 # Directory to save logs and trained model
@@ -322,23 +344,28 @@ if not os.path.exists(COCO_MODEL_PATH):
     utils.download_trained_weights(COCO_MODEL_PATH)
 # Load photo data from lmdb
 photo_data = PhotoData(r'..' + os.path.sep + '..' + os.path.sep + '..' + os.path.sep + 'photos.lmdb')
-print('Length of photo data:', len(photo_data))
+print('Length of photo data from Paperdoll lmdb:', len(photo_data))
 
 if __name__ == "__main__":
+    json_file = r'..' + os.path.sep + '..' + os.path.sep + '..' + os.path.sep + 'modanet2018_instances_train.json'
+    d = json.load(open(json_file))
+    coco = COCO(json_file)
+    subset_ids = sorted(coco.getCatIds(catNms=subset))
     config = TrainConfig()
     config.display()
+    test_config = TestConfig()
+    test_config.display()
 
     # Training dataset
-    train_count = 1000
+    train_count = 20000
     dataset_train = FashionDataset()
-    dataset_train.load_fashion(train_count, start=0, class_ids=None)
+    dataset_train.load_fashion(train_count, start=0, class_ids=subset_ids)
     dataset_train.prepare()
 
-    test_config = TestConfig()
+    # Validation dataset
     val_count = 50
-
     dataset_val = FashionDataset()
-    dataset_val.load_fashion(val_count)
+    dataset_val.load_fashion(val_count, start=0, class_ids=subset_ids)
     dataset_val.prepare()
 
     if args.test:
