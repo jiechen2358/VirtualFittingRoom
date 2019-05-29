@@ -3,6 +3,7 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as T
 import PIL
+import os
 
 import numpy as np
 
@@ -49,33 +50,6 @@ def features_from_img(imgpath, imgsize):
     img_var = img.type(dtype)
     return extract_features(img_var, cnn), img_var
 
-# Older versions of scipy.misc.imresize yield different results
-# from newer versions, so we check to make sure scipy is up to date.
-def check_scipy():
-    import scipy
-    vnum = int(scipy.__version__.split('.')[1])
-    major_vnum = int(scipy.__version__.split('.')[0])
-    
-    assert vnum >= 16 or major_vnum >= 1, "You must install SciPy >= 0.16.0 to complete this notebook."
-
-check_scipy()
-
-# Download and load the pretrained SqueezeNet model.
-model = torchvision.models.squeezenet1_1(pretrained=True)
-
-# We don't want to train the model, so tell PyTorch not to compute gradients
-# with respect to model parameters.
-for param in model.parameters():
-    param.requires_grad = False
-
-# Load the pre-trained SqueezeNet model.
-cnn = torchvision.models.squeezenet1_1(pretrained=True).features
-cnn.type(dtype)
-
-# We don't want to train the model any further, so we don't want PyTorch to waste computation 
-# computing gradients on parameters we're never going to update.
-for param in cnn.parameters():
-    param.requires_grad = False
 
 # We provide this helper code which takes an image, a model (cnn), and returns a list of
 # feature maps, one per layer.
@@ -102,7 +76,7 @@ def extract_features(x, cnn):
         prev_feat = next_feat
     return features
 
- def content_loss(content_weight, content_current, content_original):
+def content_loss(content_weight, content_current, content_original):
     """
     Compute the content loss for style transfer.
     
@@ -232,17 +206,8 @@ def style_transfer(content_image, style_image, image_size, style_size, content_l
     # Note that we are optimizing the pixel values of the image by passing
     # in the img Torch tensor, whose requires_grad flag is set to True
     optimizer = torch.optim.Adam([img], lr=initial_lr)
-    
-    f, axarr = plt.subplots(1,2)
-    axarr[0].axis('off')
-    axarr[1].axis('off')
-    axarr[0].set_title('Content Source Img.')
-    axarr[1].set_title('Style Source Img.')
-    axarr[0].imshow(deprocess(content_img.cpu()))
-    axarr[1].imshow(deprocess(style_img.cpu()))
-    plt.show()
-    plt.figure()
-    
+    img_name = os.path.basename(content_image)
+    img_name_no_ext = os.path.splitext(img_name)[0]
     for t in range(200):
         if t < 190:
             img.data.clamp_(-1.5, 1.5)
@@ -263,26 +228,41 @@ def style_transfer(content_image, style_image, image_size, style_size, content_l
             optimizer = torch.optim.Adam([img], lr=decayed_lr)
         optimizer.step()
 
-        if t % 100 == 0:
+        if t % 10 == 0:
             print('Iteration {}'.format(t))
-
+            generated_img = deprocess(img.data.cpu())
+            generated_img.save('styles/out/'+ img_name_no_ext +str(t)+'.jpg', 'JPEG')
     print('Iteration {}'.format(t))
     generated_img = deprocess(img.data.cpu())
-    generated_img.save('styles/out/test.png', 'PNG')
+    generated_img.save('styles/out/'+ img_name_no_ext +str(t)+'.jpg', 'JPEG')
+    print('Image saved.')
 
+if __name__ == "__main__":
+    dtype = torch.FloatTensor
+    #dtype = torch.cuda.FloatTensor
 
+    # Download and load the pretrained SqueezeNet model.
+    model = torchvision.models.squeezenet1_1(pretrained=True)
+    for param in model.parameters():
+        param.requires_grad = False
 
-# Composition VII + Tubingen
-params1 = {
-    'content_image' : 'styles/fashion.jpg',
-    'style_image' : 'styles/jean2.jpg',#'styles/composition_vii.jpg',
-    'image_size' : 256,
-    'style_size' : 256,
-    'content_layer' : 3,
-    'content_weight' : 5e-2, 
-    'style_layers' : (1, 4, 6, 7), # (1, 3, 6, 7)
-    'style_weights' : (20000, 800, 15, 3), # style_weights':[200000, 800, 12, 1], [300000, 1000, 15, 3]
-    'tv_weight' : 5e-2
-}
+    # Load the pre-trained SqueezeNet model.
+    cnn = torchvision.models.squeezenet1_1(pretrained=True).features
+    cnn.type(dtype)
 
-style_transfer(**params1)
+    for param in cnn.parameters():
+        param.requires_grad = False
+
+    params1 = {
+        'content_image' : 'styles/fashion.jpg',
+        'style_image' : 'styles/jean3.jpg',
+        'image_size' : 400,
+        'style_size' : 400,
+        'content_layer' : 3,
+        'content_weight' : 5e-2, 
+        'style_layers' : (1, 4, 6, 7), # (1, 3, 6, 7)
+        'style_weights' : (200000, 800, 15, 3), # style_weights':[200000, 800, 12, 1], [300000, 1000, 15, 3]
+        'tv_weight' : 5e-2
+    }
+
+    style_transfer(**params1)
