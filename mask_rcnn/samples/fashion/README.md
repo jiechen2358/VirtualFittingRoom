@@ -5,6 +5,10 @@ Most importantly, it shows how to train Mask R-CNN on Modanet dataset. Try to ru
 
 A newer version is fashion_v2.0.ipynb.
 
+# Test Results
+Test 100 Images Note book shows testing on 100 images with our latest trained weights.
+It can achieve > 72% mAP with IoU set to 0.5.
+
 ## LoadandTest.ipynb
 This note book demos how to load a pre-trained model and perform test.
 
