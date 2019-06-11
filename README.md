@@ -11,7 +11,7 @@ See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_
 * A sample Jupyter notebook to demo how to train model.
 * A sample Jupyter notebook to demo how to load pretrained model and perform test.
 * Test 100 images.ipynb, test on 100 images and achieve > 73% mAP with IoU set to 0.5.
-* A note book demos how to only visualize colored masks from the result.
+* A Jupyter notebook demos how to only visualize colored masks from the result.
 
 ## Dataset
 * The raw image  data comes from PaperDoll dataset - a collection of images of street-fashion models.
