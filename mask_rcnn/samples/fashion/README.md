@@ -19,6 +19,9 @@ It is a sample script to perform training and testing on PaperDoll dataset with 
 
        python fashion.py
 
+## Visualize Mask Only.ipynb
+This note book demos how to visualize colored masks from results.
+
 3. To test:
 
        python fashion.py --test
