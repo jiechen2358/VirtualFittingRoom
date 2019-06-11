@@ -1,3 +1,5 @@
+## NOTE: In our current stage, we actually use https://github.com/jiechen2358/VirtualFittingRoom/tree/master/styletransfer for our style transfer task. We listed this project here for reference, we are interested in the "color-preserving" feature which may related to our future work.
+
 # neural-style
 
 An implementation of [neural style][paper] in TensorFlow.
