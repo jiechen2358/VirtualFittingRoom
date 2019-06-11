@@ -45,6 +45,6 @@ For Linux, you can also simply try following commands:
       pip install cython pycocotools
 
 ## Reference
-* For Instance Segmentation, our implementation based on https://github.com/matterport/Mask_RCNN.
-* For Neural Style Transfer, our implementation based on CS231n Assignment3 Style Transfer Notebook. We modified it to some script so that we can use it more conveniently. See https://github.com/jiechen2358/VirtualFittingRoom/tree/master/styletransfer.
-* For Neural Style Transfer, we also refer https://github.com/anishathalye/neural-style (Copyright (c) 2015-2018 Anish Athalye. Released under GPLv3). The reason is we found it includes some mechanism to maintain the color. One of our future work is to remain color information, either on content or on texture by introduce a new color loss.
+* For Instance Segmentation, our implementation is based on https://github.com/matterport/Mask_RCNN.
+* For Neural Style Transfer, our implementation is based on CS231n Assignment3 Style Transfer Notebook. We refer the structure and modify it to script format so that we can use it more conveniently. See https://github.com/jiechen2358/VirtualFittingRoom/tree/master/styletransfer.
+* For Neural Style Transfer, we also refer https://github.com/anishathalye/neural-style (Copyright (c) 2015-2018 Anish Athalye. Released under GPLv3). The reason is that we found it includes some mechanism to maintain the color. One of our future work is to remain color information, either on content or on texture by introducing new color loss.
