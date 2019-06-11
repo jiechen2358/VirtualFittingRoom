@@ -4,13 +4,13 @@ Note: This project is still in progress ...
 ## Introduction
 Given a portrait picture, the goal of our project is to replace the texture and style of any piece of attire with new texture or style based on the user's choice. For instance, by feeding one portrait image with selections of target textures either predetermined or from another image, our application will change the textures or styles of certain fashion items respectively: pants texture will be transferred from canvas to jeans; coat texture will be transferred from cotton to leather.Thus we can adopt different combinations in different scenarios depending on the input image: day or night; indoor or outdoor with different body poses.
 
-## A Demo to train and test (Fashion) ModaNet data using Mask-RCNN
+## Demo files to train and test (Fashion) ModaNet data using Mask-RCNN
 See page at: https://github.com/jiechen2358/VirtualFittingRoom/blob/master/mask_rcnn/samples/fashion/, which including:
 * Instructions on how to perform training and testing.
 * A sample script to perform training and testing.
 * A sample Jupyter notebook to demo how to train model.
 * A sample Jupyter notebook to demo how to load pretrained model and perform test.
-* A backup pdf format for reading purpose.
+* Test 100 images.ipynb, test on 100 images and achieve > 73% mAP with IoU set to 0.5.
 
 ## Dataset
 * The raw image  data comes from PaperDoll dataset - a collection of images of street-fashion models.
