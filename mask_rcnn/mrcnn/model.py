@@ -30,6 +30,7 @@ from distutils.version import LooseVersion
 assert LooseVersion(tf.__version__) >= LooseVersion("1.3")
 assert LooseVersion(keras.__version__) >= LooseVersion('2.0.8')
 
+import matplotlib.pyplot as plt
 
 ############################################################
 #  Utility Functions
@@ -2314,6 +2315,12 @@ class MaskRCNN():
             # all layers but the backbone
             "heads": r"(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
             # From a specific Resnet stage and up
+            # "3+bn": r"(res3.*)|(bn3.*)|(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+            # "4+bn": r"(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+            # "5+bn": r"(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+            # "3+": r"(res3.*)|(res4.*)|(res5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+            # "4+": r"(res4.*)|(res5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
+            # "5+": r"(res5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
             "3+": r"(res3.*)|(bn3.*)|(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
             "4+": r"(res4.*)|(bn4.*)|(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
             "5+": r"(res5.*)|(bn5.*)|(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
@@ -2361,7 +2368,7 @@ class MaskRCNN():
         else:
             workers = multiprocessing.cpu_count()
 
-        self.keras_model.fit_generator(
+        history = self.keras_model.fit_generator(
             train_generator,
             initial_epoch=self.epoch,
             epochs=epochs,
@@ -2373,7 +2380,9 @@ class MaskRCNN():
             workers=workers,
             use_multiprocessing=True,
         )
+
         self.epoch = max(self.epoch, epochs)
+        return history
 
     def mold_inputs(self, images):
         """Takes a list of images and modifies them to the format expected
