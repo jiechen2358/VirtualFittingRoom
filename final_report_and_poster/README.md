@@ -27,18 +27,18 @@ A computer virus.
 **Additional Submission Requirements**: We will also ask you do do the following when you submit your project report:
 
 - **Your report PDF should list all authors who have contributed to your work; enough to warrant a co-authorship position.** This includes people not enrolled in CS 231N such as faculty/advisors if they sponsored your work with funding or data, significant mentors (e.g., PhD students or postdocs who coded with you, collected data with you, or helped draft your model on a whiteboard). All authors should be listed directly underneath the title on your PDF. Include a footnote on the first page indicating which authors are not enrolled in CS 231N. All co-authors should have their institutional/organizational affiliation specified below the title.
-If you have non-231N contributors, you will be asked to describe the following:
-Specify the involvement of non-CS 231N contributors (discussion, writing code, writing paper, etc). For an example, please see the author contributions for [AlphaGo (Nature, 2016)](https://www.nature.com/nature/journal/v529/n7587/full/nature16961.html#author-information).
-Specify whether the project has been submitted to a peer-reviewed conference or journal. Include the full name and acronym of the conference (if applicable). For example: Neural Information Processing Systems (NIPS). This only applies if you have already submitted your paper/manuscript and it is under review as of the report deadline.
+  - If you have non-231N contributors, you will be asked to describe the following:
+  - **Specify the involvement of non-CS 231N contributors** (discussion, writing code, writing paper, etc). For an example, please see the author contributions for [AlphaGo (Nature, 2016)](https://www.nature.com/nature/journal/v529/n7587/full/nature16961.html#author-information).
+  - **Specify whether the project has been submitted to a peer-reviewed conference or journal.** Include the full name and acronym of the conference (if applicable). For example: Neural Information Processing Systems (NIPS). This only applies if you have already submitted your paper/manuscript and it is under review as of the report deadline.
 - **Any code that was used as a base for projects must be referenced and cited in the body of the paper.** This includes CS 231N assignment code, finetuning example code, open-source, or Github implementations. You can use a footnote or full reference/bibliography entry.
 - **If you are using this project for multiple classes, submit the other class PDF as well.** Remember, it is an honor code violation to use the same final report PDF for multiple classes.
 In summary, include all contributing authors in your PDF; include detailed non-231N co-author information; tell us if you submitted to a conference, cite any code you used, and submit your dual-project report (e.g., CS 230, CS 231A, CS 234).
 
 # Poster Session
 We will hold a poster session in which you will present the results of your projects is form of a poster.
-- Date: Tuesday, June 11, 2018
-- Time: 12:00 pm to 3:15 pm
-- Location: Arrillaga Alumni Center
-- Who: All on-campus students are required to attend. Local SCPD students are highly recommended to attend. Stanford students, faculty, and guests from industry are welcome!
-- Food: Food and light refreshments will be provided.
+- **Date:** Tuesday, June 11, 2018
+- **Time:** 12:00 pm to 3:15 pm
+- **Location:** Arrillaga Alumni Center
+- **Who:** All on-campus students are required to attend. Local SCPD students are highly recommended to attend. Stanford students, faculty, and guests from industry are welcome!
+- **Food:** Food and light refreshments will be provided.
 Students: We will provide foam poster boards and easels. Please print your poster on a 20 inch by 30 inch poster in either landscape or portrait format. Posters larger than 24 inch by 36 inches may not fit on our poster boards. All students are required to submit a PDF of their poster before the event. See Piazza for details. Caution: Do not wait until the day before the event to print your poster. Many on-campus printers (e.g., EE, BioX) run out of paper or toner during the last week of classes. Many other courses also have poster presentations or academic conferences take place during this week and there is no guarantee they will be able to rush-print your order.
