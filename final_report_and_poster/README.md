@@ -22,6 +22,7 @@ The entire PyTorch/TensorFlow Github source code.
 Any code that is larger than 10 MB.
 Model checkpoints.
 A computer virus.
+
 **Submission**: You will submit your final report as a PDF and your supplementary material as a separate PDF or ZIP file. We will provide detailed submission instructions as the deadline nears.
 
 **Additional Submission Requirements**: We will also ask you do do the following when you submit your project report:
@@ -32,6 +33,7 @@ A computer virus.
   - **Specify whether the project has been submitted to a peer-reviewed conference or journal.** Include the full name and acronym of the conference (if applicable). For example: Neural Information Processing Systems (NIPS). This only applies if you have already submitted your paper/manuscript and it is under review as of the report deadline.
 - **Any code that was used as a base for projects must be referenced and cited in the body of the paper.** This includes CS 231N assignment code, finetuning example code, open-source, or Github implementations. You can use a footnote or full reference/bibliography entry.
 - **If you are using this project for multiple classes, submit the other class PDF as well.** Remember, it is an honor code violation to use the same final report PDF for multiple classes.
+
 In summary, include all contributing authors in your PDF; include detailed non-231N co-author information; tell us if you submitted to a conference, cite any code you used, and submit your dual-project report (e.g., CS 230, CS 231A, CS 234).
 
 # Poster Session
@@ -41,4 +43,5 @@ We will hold a poster session in which you will present the results of your proj
 - **Location:** Arrillaga Alumni Center
 - **Who:** All on-campus students are required to attend. Local SCPD students are highly recommended to attend. Stanford students, faculty, and guests from industry are welcome!
 - **Food:** Food and light refreshments will be provided.<br/>
+
 Students: We will provide foam poster boards and easels. Please print your poster on a 20 inch by 30 inch poster in either landscape or portrait format. Posters larger than 24 inch by 36 inches may not fit on our poster boards. All students are required to submit a PDF of their poster before the event. See Piazza for details. Caution: Do not wait until the day before the event to print your poster. Many on-campus printers (e.g., EE, BioX) run out of paper or toner during the last week of classes. Many other courses also have poster presentations or academic conferences take place during this week and there is no guarantee they will be able to rush-print your order.
