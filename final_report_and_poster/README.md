@@ -1,11 +1,11 @@
 The guideline of final report and poster can be found [here](http://cs231n.stanford.edu/project.html).<br/>
 # Final Report
-Your final write-up is required to be between 6 - 8 pages using the provided template, structured like a paper from a computer vision conference (CVPR, ECCV, ICCV, etc.). Please use this template so we can fairly judge all student projects without worrying about altered font sizes, margins, etc. After the class, we will post all the final reports online so that you can read about each others' work. If you do not want your writeup to be posted online, then please let us know via the project registration form.
+Your final write-up is required to be between **6 - 8** pages using the [provided template](http://www.pamitc.org/cvpr15/files/cvpr2015AuthorKit.zip), structured like a paper from a computer vision conference (CVPR, ECCV, ICCV, etc.). Please use this template so we can fairly judge all student projects without worrying about altered font sizes, margins, etc. After the class, we will post all the final reports online so that you can read about each others' work. If you do not want your writeup to be posted online, then please let us know via the project registration form.
 
 The following is a suggested structure for your report, as well as the rubric that we will follow when evaluating reports. You don't necessarily have to organize your report using these sections in this order, but that would likely be a good starting point for most projects.
 Refer to [Gradescope] for more fine-grained details and explanations of each separate section.
 
-Title, Author(s)
+-**Title, Author(s)**
 Abstract: Briefly describe your problem, approach, and key results. Should be no more than 300 words.
 Introduction (10%): Describe the problem you are working on, why it's important, and an overview of your results
 Related Work (10%): Discuss published work that relates to your project. How is your approach similar or different from others?
@@ -28,7 +28,7 @@ Additional Submission Requirements: We will also ask you do do the following whe
 
 Your report PDF should list all authors who have contributed to your work; enough to warrant a co-authorship position. This includes people not enrolled in CS 231N such as faculty/advisors if they sponsored your work with funding or data, significant mentors (e.g., PhD students or postdocs who coded with you, collected data with you, or helped draft your model on a whiteboard). All authors should be listed directly underneath the title on your PDF. Include a footnote on the first page indicating which authors are not enrolled in CS 231N. All co-authors should have their institutional/organizational affiliation specified below the title.
 If you have non-231N contributors, you will be asked to describe the following:
-Specify the involvement of non-CS 231N contributors (discussion, writing code, writing paper, etc). For an example, please see the author contributions for AlphaGo (Nature, 2016).
+Specify the involvement of non-CS 231N contributors (discussion, writing code, writing paper, etc). For an example, please see the author contributions for [AlphaGo (Nature, 2016)](https://www.nature.com/nature/journal/v529/n7587/full/nature16961.html#author-information).
 Specify whether the project has been submitted to a peer-reviewed conference or journal. Include the full name and acronym of the conference (if applicable). For example: Neural Information Processing Systems (NIPS). This only applies if you have already submitted your paper/manuscript and it is under review as of the report deadline.
 Any code that was used as a base for projects must be referenced and cited in the body of the paper. This includes CS 231N assignment code, finetuning example code, open-source, or Github implementations. You can use a footnote or full reference/bibliography entry.
 If you are using this project for multiple classes, submit the other class PDF as well. Remember, it is an honor code violation to use the same final report PDF for multiple classes.
