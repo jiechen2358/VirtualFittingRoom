@@ -16,12 +16,12 @@ Refer to [Gradescope] for more fine-grained details and explanations of each sep
 - **Writing / Formatting (5%)** Is your paper clearly written and nicely formatted?
 - **Supplementary Material**, not counted toward your 6-8 page limit and submitted as a separate file. Your supplementary material might include:
   - Source code (if your project proposed an algorithm, or code that is relevant and important for your project.).
-  - Cool videos, interactive visualizations, demos, etc.<br/>
-Examples of things to not put in your supplementary material:
-  - The entire PyTorch/TensorFlow Github source code.
-  - Any code that is larger than 10 MB.
-  - Model checkpoints.
-  - A computer virus.
+  - Cool videos, interactive visualizations, demos, etc.<br/><br/>
+>>Examples of things to not put in your supplementary material:
+>>- The entire PyTorch/TensorFlow Github source code.
+>>- Any code that is larger than 10 MB.
+>>- Model checkpoints.
+>>- A computer virus.
 
 **Submission**: You will submit your final report as a PDF and your supplementary material as a separate PDF or ZIP file. We will provide detailed submission instructions as the deadline nears.
 
