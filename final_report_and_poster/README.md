@@ -40,5 +40,5 @@ We will hold a poster session in which you will present the results of your proj
 - **Time:** 12:00 pm to 3:15 pm
 - **Location:** Arrillaga Alumni Center
 - **Who:** All on-campus students are required to attend. Local SCPD students are highly recommended to attend. Stanford students, faculty, and guests from industry are welcome!
-- **Food:** Food and light refreshments will be provided.
+- **Food:** Food and light refreshments will be provided.<br/>
 Students: We will provide foam poster boards and easels. Please print your poster on a 20 inch by 30 inch poster in either landscape or portrait format. Posters larger than 24 inch by 36 inches may not fit on our poster boards. All students are required to submit a PDF of their poster before the event. See Piazza for details. Caution: Do not wait until the day before the event to print your poster. Many on-campus printers (e.g., EE, BioX) run out of paper or toner during the last week of classes. Many other courses also have poster presentations or academic conferences take place during this week and there is no guarantee they will be able to rush-print your order.
