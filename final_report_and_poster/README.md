@@ -1,5 +1,5 @@
-The guideline of final report and poster can be found [here](http://cs231n.stanford.edu/project.html).
-Final Report
+The guideline of final report and poster can be found [here](http://cs231n.stanford.edu/project.html).<br/>
+# Final Report
 Your final write-up is required to be between 6 - 8 pages using the provided template, structured like a paper from a computer vision conference (CVPR, ECCV, ICCV, etc.). Please use this template so we can fairly judge all student projects without worrying about altered font sizes, margins, etc. After the class, we will post all the final reports online so that you can read about each others' work. If you do not want your writeup to be posted online, then please let us know via the project registration form.
 
 The following is a suggested structure for your report, as well as the rubric that we will follow when evaluating reports. You don't necessarily have to organize your report using these sections in this order, but that would likely be a good starting point for most projects.
@@ -34,7 +34,7 @@ Any code that was used as a base for projects must be referenced and cited in th
 If you are using this project for multiple classes, submit the other class PDF as well. Remember, it is an honor code violation to use the same final report PDF for multiple classes.
 In summary, include all contributing authors in your PDF; include detailed non-231N co-author information; tell us if you submitted to a conference, cite any code you used, and submit your dual-project report (e.g., CS 230, CS 231A, CS 234).
 
-Poster Session
+# Poster Session
 We will hold a poster session in which you will present the results of your projects is form of a poster.
 Date: Tuesday, June 11, 2018
 Time: 12:00 pm to 3:15 pm
