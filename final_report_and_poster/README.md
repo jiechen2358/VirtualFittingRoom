@@ -1,4 +1,4 @@
-The guideline of final report and poster can be found [here](http://cs231n.stanford.edu/project.html).<br/>
+The guideline of project including final report and poster can be found [here](http://cs231n.stanford.edu/project.html).<br/>
 # Final Report
 Your final write-up is required to be between **6 - 8** pages using the [provided template](http://www.pamitc.org/cvpr15/files/cvpr2015AuthorKit.zip), structured like a paper from a computer vision conference (CVPR, ECCV, ICCV, etc.). Please use this template so we can fairly judge all student projects without worrying about altered font sizes, margins, etc. After the class, we will post all the final reports online so that you can read about each others' work. If you do not want your writeup to be posted online, then please let us know via the project registration form.
 
