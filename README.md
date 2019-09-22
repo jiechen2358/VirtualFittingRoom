@@ -1,4 +1,5 @@
 # VirtualFittingRoom
+Poster of this project was graded **100/100** by cs231n(spring semester 2019) of Stanford University.
 
 ## Introduction
 Given a portrait picture, the goal of our project is to replace the texture and style of any piece of attire with new texture or style based on the user's choice. For instance, by feeding one portrait image with selections of target textures either predetermined or from another image, our application will change the textures or styles of certain fashion items respectively: pants texture will be transferred from canvas to jeans; coat texture will be transferred from cotton to leather.Thus we can adopt different combinations in different scenarios depending on the input image: day or night; indoor or outdoor with different body poses.
